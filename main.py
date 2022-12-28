@@ -3,6 +3,7 @@ import random
 import string
 import sys
 from concurrent.futures import ThreadPoolExecutor
+from time import perf_counter
 
 from logger import init_logger
 
@@ -24,6 +25,7 @@ def main(paths: list[str] = None) -> None:
         sys.exit(1)
 
     logger.info(f"Starting benchmark...")
+    start_time = perf_counter()
     with ThreadPoolExecutor() as executor:
         for path in paths:
             executor.submit(write_random_data, path)
@@ -32,6 +34,9 @@ def main(paths: list[str] = None) -> None:
     logger.info("Cleanup...")
     delete_files(paths=paths)
     logger.info("Cleanup done.")
+
+    elapsed = perf_counter() - start_time
+    logger.info(f"Benchmark took {elapsed} seconds.")
 
 
 def files_exist(paths: list[str]) -> bool:
