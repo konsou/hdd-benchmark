@@ -5,6 +5,7 @@ import string
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from time import perf_counter
+from typing import List
 
 from logger import init_logger
 
@@ -14,7 +15,7 @@ CHARS_PER_LINE = 100
 logger = init_logger()
 
 
-def main(paths: list[str] = None) -> None:
+def main(paths: List[str] = None) -> None:
     logger.info("----------------NEW RUN----------------")
     if paths is None:
         paths = sys.argv[1:]
@@ -40,7 +41,7 @@ def main(paths: list[str] = None) -> None:
     logger.info(f"Benchmark took {elapsed} seconds.")
 
 
-def files_exist(paths: list[str]) -> bool:
+def files_exist(paths: List[str]) -> bool:
     found_existing = False
     for path in paths:
         if os.path.exists(path):
@@ -49,7 +50,7 @@ def files_exist(paths: list[str]) -> bool:
     return found_existing
 
 
-def delete_files(paths: list[str]) -> None:
+def delete_files(paths: List[str]) -> None:
     for path in paths:
         logger.info(f"Deleting {path}")
         os.remove(path)
