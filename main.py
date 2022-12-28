@@ -24,6 +24,7 @@ def main(paths: List[str] = None) -> None:
 
     if not paths:
         logger.error(f"No paths set. Exiting.")
+        sys.exit(1)
 
     paths_string = ', '.join(paths)
     logger.info(f"Paths selected: {paths_string}")
