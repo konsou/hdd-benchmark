@@ -2,8 +2,9 @@ import logging
 import sys
 
 
-def init_logger(level=logging.INFO,
-                logfile='benchmark_log.txt') -> logging.getLoggerClass():
+def init_logger(logfile: str,
+                level=logging.INFO,
+                ) -> logging.getLoggerClass():
     logger = logging.getLogger()
     logger.setLevel(level)
     formatter = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s',

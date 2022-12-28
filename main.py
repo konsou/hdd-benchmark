@@ -11,14 +11,20 @@ from logger import init_logger
 
 LINES_TO_WRITE = 1000
 CHARS_PER_LINE = 100
+LOGFILE = 'benchmark_log.txt'
 
-logger = init_logger()
+logger = init_logger(logfile=LOGFILE)
 
 
 def main(paths: List[str] = None) -> None:
     logger.info("----------------NEW RUN----------------")
+    logger.info(f"Logfile is {LOGFILE}")
     if paths is None:
         paths = sys.argv[1:]
+
+    if not paths:
+        logger.error(f"No paths set. Exiting.")
+
     paths_string = ', '.join(paths)
     logger.info(f"Paths selected: {paths_string}")
 
@@ -70,8 +76,4 @@ def random_string(length: int) -> str:
 
 
 if __name__ == '__main__':
-    main(paths=[
-        "asdf.txt",
-        "moimoim.txt",
-        "jeejee.txt",
-    ])
+    main()
