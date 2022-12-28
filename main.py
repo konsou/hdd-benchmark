@@ -56,9 +56,11 @@ def delete_files(paths: list[str]) -> None:
 
 def write_random_data(path: str) -> None:
     logger.info(f"Writing to {path}, {LINES_TO_WRITE} open/close(s), {CHARS_PER_LINE} chars per line")
+    start_time = perf_counter()
     for _ in range(LINES_TO_WRITE):
         with open(path, 'a', encoding='utf-8') as f:
             f.write(f"{random_string(length=CHARS_PER_LINE)}\n")
+    logger.info(f"{path} writes finished in {perf_counter() - start_time} seconds")
 
 
 def random_string(length: int) -> str:
