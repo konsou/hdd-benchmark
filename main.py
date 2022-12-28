@@ -2,52 +2,55 @@ import os.path
 import random
 import string
 import sys
-import time
 from concurrent.futures import ThreadPoolExecutor
-from time import sleep
+
+from logger import init_logger
 
 LINES_TO_WRITE = 1000
 CHARS_PER_LINE = 100
 
+logger = init_logger()
+
 
 def main(paths: list[str] = None) -> None:
+    logger.info("----------------NEW RUN----------------")
     if paths is None:
         paths = sys.argv[1:]
-    print(f"Paths selected:")
-    print('\n'.join(paths))
+    paths_string = ', '.join(paths)
+    logger.info(f"Paths selected: {paths_string}")
 
     if files_exist(paths=paths):
-        print(f"FILES ALREADY EXIST - EXITING")
+        logger.info(f"FILES ALREADY EXIST - EXITING")
         sys.exit(1)
 
-    print(f"Starting benchmark...")
+    logger.info(f"Starting benchmark...")
     with ThreadPoolExecutor() as executor:
         for path in paths:
             executor.submit(write_random_data, path)
-    print("Done.")
+    logger.info("Done.")
 
-    print("Cleanup...")
+    logger.info("Cleanup...")
     delete_files(paths=paths)
-    print("Cleanup done.")
+    logger.info("Cleanup done.")
 
 
 def files_exist(paths: list[str]) -> bool:
     found_existing = False
     for path in paths:
         if os.path.exists(path):
-            print(f"{path} exists")
+            logger.info(f"{path} exists")
             found_existing = True
     return found_existing
 
 
 def delete_files(paths: list[str]) -> None:
     for path in paths:
-        print(f"Deleting {path}")
+        logger.info(f"Deleting {path}")
         os.remove(path)
 
 
 def write_random_data(path: str) -> None:
-    print(f"Writing to {path}, {LINES_TO_WRITE} open/close(s), {CHARS_PER_LINE} chars per line")
+    logger.info(f"Writing to {path}, {LINES_TO_WRITE} open/close(s), {CHARS_PER_LINE} chars per line")
     for _ in range(LINES_TO_WRITE):
         with open(path, 'a', encoding='utf-8') as f:
             f.write(f"{random_string(length=CHARS_PER_LINE)}\n")
